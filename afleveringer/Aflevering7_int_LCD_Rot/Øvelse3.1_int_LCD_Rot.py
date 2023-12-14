@@ -89,3 +89,4 @@ class Menu:
         loop = asyncio.get_event_loop()
         loop.create_task(self.menu_nav())
         loop.run_forever()
+    

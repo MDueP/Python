@@ -1,4 +1,6 @@
 # Øvelse 2.1 - Skriv dit navn på LCD Display
+#Lavet af Mikkel Due-Pedersen
+#Hold 1.A ITTEK
 from gpio_lcd import GpioLcd
 from machine import Pin
 

@@ -1,4 +1,6 @@
 #Øvelse 2.2 - Lav eget specialtegn og indsæt efter eget navn
+#Lavet af Mikkel Due-Pedersen
+#Hold 1.A ITTEK
 from gpio_lcd import GpioLcd
 from machine import Pin
 
