@@ -2,18 +2,19 @@ from gpio_lcd import GpioLcd
 from machine import Pin, RTC
 import network
 import ntptime
-import time
+
 
 lcd = GpioLcd(rs_pin=Pin(27), enable_pin=Pin(25),
               d4_pin=Pin(33), d5_pin=Pin(32),
               d6_pin=Pin(21), d7_pin=Pin(22),
               num_lines=4, num_columns=20)
 rtc = RTC()
-UTC_OFFSET = 0*60*60 #retter tidszonen
-actual_time = time.localtime(time.time() + UTC_OFFSET)
-rtc.datetime((actual_time))
-
-global wlan
+UTC_OFFSET = 1*60*60 #retter tidszonen
+ntptime.settime()
+actual_time_utc = time.localtime(time.time() + UTC_OFFSET)
+#sørger for at tuplen er i den rækkefølge vi gerne vil have
+rtc.datetime((actual_time_utc[0], actual_time_utc[1], actual_time_utc[2], 0, actual_time_utc[3], actual_time_utc[4], actual_time_utc[5], 0))
+global wlan #variabel fra boot.py
 try:
     if wlan.status() == 1010:
         lcd.clear()
@@ -29,7 +30,7 @@ try:
         lcd.putstr("Authentication Timeout")
 finally:
     sorteddato = rtc.datetime()[2], rtc.datetime()[1], rtc.datetime()[0]
-    sortedtid = rtc.datetime()[3], rtc.datetime()[4]
+    sortedtid = rtc.datetime()[4], rtc.datetime()[5]
     lcd.move_to(0,3)
     lcd.putstr(f"WLAN status:{wlan.status()}")
     lcd.move_to(0,1)
@@ -37,4 +38,4 @@ finally:
     lcd.move_to(0,2)
     lcd.putstr(f"{sortedtid}")
     print(f"{rtc.datetime()}")
-    print(f"{actual_time}")
+    print(f"{actual_time_utc}")
